@@ -1,7 +1,9 @@
 import * as core from '@actions/core'
+import * as github from '@actions/github'
 import run from '../debug'
 import fs from 'fs'
 import yaml from 'js-yaml'
+import { WebhookPayload } from '@actions/github/lib/interfaces'
 
 beforeEach(() => {
     jest.resetModules()
@@ -10,6 +12,11 @@ beforeEach(() => {
         const envVar = `INPUT_${name.replace(/ /g, '_').toUpperCase()}`
         process.env[envVar] = doc.inputs[name]['default']
     })
+    github.context.payload = {
+        pusher: {
+            name: 'mona',
+        },
+    } as WebhookPayload
 })
 
 afterEach(() => {
